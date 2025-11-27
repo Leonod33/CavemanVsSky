@@ -1,0 +1,237 @@
+[gd_scene load_steps=19 format=4 uid="uid://bn3apk2h8sni5"]
+
+[ext_resource type="Script" path="res://scenes/world/game_caveman_vs_sky.gd" id="1_ls5qy"]
+[ext_resource type="PackedScene" uid="uid://gveyfjrwh0xm" path="res://scenes/world/WallSegment.tscn" id="2_8d6jk"]
+[ext_resource type="Texture2D" uid="uid://birk341lyo3ur" path="res://sprites/world/grass.png" id="2_nay3w"]
+[ext_resource type="PackedScene" uid="uid://dfbrkjpvsojss" path="res://scenes/world/Bird.tscn" id="2_p143c"]
+[ext_resource type="TileSet" uid="uid://bv2jngoimir7k" path="res://tiles/path_tileset.tres" id="2_x8xji"]
+[ext_resource type="PackedScene" uid="uid://d27e7f4swljoh" path="res://scenes/world/Tree.tscn" id="3_emqng"]
+[ext_resource type="Texture2D" uid="uid://bq35orpx50ye" path="res://sprites/world/sky.png" id="3_fvu4l"]
+[ext_resource type="PackedScene" uid="uid://dkme8th6w705g" path="res://scenes/caveman/Caveman.tscn" id="3_hpcj2"]
+[ext_resource type="PackedScene" uid="uid://bkvrn0spjanu0" path="res://scenes/world/WallSegmentTower.tscn" id="3_xho5t"]
+[ext_resource type="PackedScene" uid="uid://div03yug0ec4h" path="res://scenes/world/Rock.tscn" id="4_ukilh"]
+[ext_resource type="PackedScene" uid="uid://bgoauy0hoxx00" path="res://scenes/world/CaveEntrance.tscn" id="4_wcgs7"]
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="7_5e2va"]
+[ext_resource type="PackedScene" uid="uid://yvsxuhdr6yi2" path="res://scenes/world/Slingshot.tscn" id="7_l0fu2"]
+[ext_resource type="Texture2D" uid="uid://bc2tq3scuuw" path="res://sprites/ui/CaveHealthBack.png" id="14_pg4v4"]
+[ext_resource type="Texture2D" uid="uid://dkubmqrxmc3jg" path="res://sprites/ui/CaveHealthFront.png" id="15_468x7"]
+[ext_resource type="Texture2D" uid="uid://b2e0m6kydb22x" path="res://sprites/ui/woodicon.png" id="16_271fw"]
+[ext_resource type="Texture2D" uid="uid://dan717ccjv2ya" path="res://sprites/ui/stoneicon.png" id="17_rwrwa"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lhg00"]
+bg_color = Color(0, 0, 0, 0.760784)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
+
+[node name="Game_CavemanVsSky" type="Node2D"]
+script = ExtResource("1_ls5qy")
+bird_scene = ExtResource("2_p143c")
+bird_spawn_interval = 5.0
+bird_spawn_y = 120.0
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="SkyLayer" type="Node2D" parent="World"]
+
+[node name="SkySprite" type="Sprite2D" parent="World/SkyLayer"]
+z_index = -3
+position = Vector2(960, 262)
+scale = Vector2(2.5973, 1.87234)
+texture = ExtResource("3_fvu4l")
+
+[node name="WallLayer" type="Node2D" parent="World"]
+z_index = -1
+position = Vector2(0, 360)
+
+[node name="WallSegment" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
+position = Vector2(61, 104)
+
+[node name="WallSegment2" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
+position = Vector2(185, 104)
+
+[node name="TowSeg1" parent="World/WallLayer" instance=ExtResource("3_xho5t")]
+position = Vector2(309, 104)
+
+[node name="TowerSpot1" type="Node2D" parent="World/WallLayer" groups=["tower_spot"]]
+position = Vector2(308, 38)
+
+[node name="BuildMarker" type="Node2D" parent="World/WallLayer/TowerSpot1"]
+position = Vector2(0, 154)
+
+[node name="WallSegment4" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
+position = Vector2(433, 104)
+
+[node name="WallSegment5" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
+position = Vector2(557, 104)
+
+[node name="TowSeg2" parent="World/WallLayer" instance=ExtResource("3_xho5t")]
+position = Vector2(680, 104)
+
+[node name="TowerSpot2" type="Node2D" parent="World/WallLayer" groups=["tower_spot"]]
+position = Vector2(680, 37)
+
+[node name="BuildMarker" type="Node2D" parent="World/WallLayer/TowerSpot2"]
+position = Vector2(1, 160)
+
+[node name="WallSegment7" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
+position = Vector2(805, 104)
+
+[node name="WallSegment8" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
+position = Vector2(929, 104)
+
+[node name="WallSegment9" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
+position = Vector2(1053, 104)
+
+[node name="WallSegment10" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
+position = Vector2(1177, 104)
+
+[node name="TowSeg3" parent="World/WallLayer" instance=ExtResource("3_xho5t")]
+position = Vector2(1301, 104)
+
+[node name="TowerSpot3" type="Node2D" parent="World/WallLayer" groups=["tower_spot"]]
+position = Vector2(1300, 37)
+
+[node name="BuildMarker" type="Node2D" parent="World/WallLayer/TowerSpot3"]
+position = Vector2(4, 159)
+
+[node name="WallSegment12" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
+position = Vector2(1425, 104)
+
+[node name="WallSegment13" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
+position = Vector2(1549, 104)
+
+[node name="TowSeg4" parent="World/WallLayer" instance=ExtResource("3_xho5t")]
+position = Vector2(1673, 104)
+
+[node name="TowerSpot4" type="Node2D" parent="World/WallLayer" groups=["tower_spot"]]
+position = Vector2(1672, 38)
+
+[node name="BuildMarker" type="Node2D" parent="World/WallLayer/TowerSpot4"]
+position = Vector2(2, 158)
+
+[node name="WallSegment15" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
+position = Vector2(1797, 104)
+
+[node name="WallSegment16" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
+position = Vector2(1921, 104)
+
+[node name="CaveEntrance" parent="World/WallLayer" instance=ExtResource("4_wcgs7")]
+position = Vector2(955, 166)
+scale = Vector2(2.2, 2.05)
+
+[node name="Slingshot" parent="World/WallLayer" instance=ExtResource("7_l0fu2")]
+z_index = 3
+position = Vector2(950, 354)
+scale = Vector2(0.8, 0.8)
+
+[node name="GroundLayer" type="Node2D" parent="World"]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="World/GroundLayer"]
+z_index = 1
+position = Vector2(1351, 29)
+tile_map_data = PackedByteArray("AADe/x4AAQAAAAAAAADf/x4AAQAAAAAAAADg/x4AAQAAAAAAAADh/x4AAQAAAAAAAADi/x4AAQAAAAAAAADj/x4AAQAAAAAAAADk/x4AAQAAAAAAAADl/x4AAQAAAAAAAADm/x4AAQAAAAAAAADn/x4AAQAAAAAAAADo/x4AAQAAAAAAAADp/x4AAQAAAAAAAADq/x4AAQAAAAAAAADr/x4AAQAAAAAAAADs/x4AAQAAAAAAAADt/x4AAQAAAAAAAADu/x4AAQAAAAAAAADv/x4AAQAAAAAAAADw/x4AAQAAAAAAAADx/x4AAQAAAAAAAADy/x4AAQAAAAAAAADz/x4AAQAAAAAAAAD0/x4AAQAAAAAAAAD1/x4AAQAAAAAAAAD2/x4AAQAAAAAAAAD3/x4AAQAAAAAAAAD4/x4AAQAAAAAAAAD5/x4AAQAAAAAAAAD6/x4AAQAAAAAAAAD7/x4AAQAAAAAAAAD8/x4AAQAAAAAAAAD9/x4AAQAAAAAAAAD+/x4AAQAAAAAAAAD//x4AAQAAAAAAAAAAAB4AAQAAAAAAAAABAB4AAQAAAAAAAAACAB4AAQAAAAAAAAADAB4AAQAAAAAAAAAEAB4AAQAAAAAAAAAFAB4AAQAAAAAAAAAGAB4AAQAAAAAAAAAHAB4AAQAAAAAAAAAIAB4AAQAAAAAAAAAJAB4AAQAAAAAAAADz/x0AAQAAAAAAAADz/xwAAQAAAAAAAADz/xsAAQAAAAAAAADz/xoAAQAAAAAAAADz/xkAAQAAAAAAAADz/xgAAQAAAAAAAADz/xcAAQAAAAAAAADz/xYAAQAAAAAAAADz/xUAAQAAAAAAAADz/xQAAQAAAAAAAADy/xQAAQAAAAAAAADx/xQAAQAAAAAAAADw/xMAAQAAAAAAAADv/xMAAQAAAAAAAADu/xMAAQAAAAAAAADw/xQAAQAAAAAAAADx/xMAAQAAAAAAAADy/xMAAQAAAAAAAADz/xMAAQAAAAAAAAD0/xQAAQAAAAAAAAD1/xQAAQAAAAAAAAD2/xQAAQAAAAAAAAD0/xMAAQAAAAAAAAD1/xMAAQAAAAAAAAD2/xMAAQAAAAAAAAD3/xMAAQAAAAAAAAD4/xMAAQAAAAAAAADt/xMAAQAAAAAAAAAFAB0AAQAAAAAAAAAFABwAAQAAAAAAAAAFABsAAQAAAAAAAAAFABoAAQAAAAAAAAAFABkAAQAAAAAAAAAFABgAAQAAAAAAAAAFABcAAQAAAAAAAAAFABYAAQAAAAAAAAAFABUAAQAAAAAAAAAGABUAAQAAAAAAAAAGABQAAQAAAAAAAAAHABMAAQAAAAAAAAAHABQAAQAAAAAAAAAGABMAAQAAAAAAAAAFABQAAQAAAAAAAAAFABMAAQAAAAAAAAAIABQAAQAAAAAAAAAIABMAAQAAAAAAAAAJABMAAQAAAAAAAAAKABMAAQAAAAAAAAALABMAAQAAAAAAAAAMABMAAQAAAAAAAAAMABQAAQAAAAAAAAALABQAAQAAAAAAAAAKABQAAQAAAAAAAAAJABQAAQAAAAAAAAAHABUAAQAAAAAAAAAIABUAAQAAAAAAAAAJABUAAQAAAAAAAAAKABUAAQAAAAAAAAALABUAAQAAAAAAAAAMABUAAQAAAAAAAADk/x0AAQAAAAAAAADk/xwAAQAAAAAAAADk/xsAAQAAAAAAAADk/xoAAQAAAAAAAADk/xkAAQAAAAAAAADk/xgAAQAAAAAAAADk/xcAAQAAAAAAAADk/xYAAQAAAAAAAADk/xUAAQAAAAAAAADk/xQAAQAAAAAAAADk/xMAAQAAAAAAAADj/xMAAQAAAAAAAADi/xMAAQAAAAAAAADh/xMAAQAAAAAAAADg/xMAAQAAAAAAAADf/xMAAQAAAAAAAADe/xMAAQAAAAAAAADd/xMAAQAAAAAAAADc/xMAAQAAAAAAAADb/xMAAQAAAAAAAADa/xMAAQAAAAAAAADa/xQAAQAAAAAAAADb/xQAAQAAAAAAAADc/xQAAQAAAAAAAADd/xQAAQAAAAAAAADe/xQAAQAAAAAAAADf/xQAAQAAAAAAAADg/xQAAQAAAAAAAADh/xQAAQAAAAAAAADi/xQAAQAAAAAAAADj/xQAAQAAAAAAAADj/xUAAQAAAAAAAADi/xUAAQAAAAAAAADh/xUAAQAAAAAAAADg/xUAAQAAAAAAAADf/xUAAQAAAAAAAADe/xUAAQAAAAAAAADd/xUAAQAAAAAAAADc/xUAAQAAAAAAAADb/xUAAQAAAAAAAADa/xUAAQAAAAAAAADe/x0AAQAAAAAAAADe/xwAAQAAAAAAAAAKAB4AAQAAAAAAAAAKAB0AAQAAAAAAAAAKABwAAQAAAAAAAAA=")
+tile_set = ExtResource("2_x8xji")
+y_sort_origin = 2
+
+[node name="GroundSprite" type="Sprite2D" parent="World/GroundLayer"]
+texture_repeat = 2
+position = Vector2(894, 826)
+texture = ExtResource("2_nay3w")
+region_enabled = true
+region_rect = Rect2(250, 250, 2500, 600)
+
+[node name="WalkArea" type="Node2D" parent="World/GroundLayer"]
+
+[node name="TopLeft" type="Marker2D" parent="World/GroundLayer/WalkArea"]
+position = Vector2(2, 561)
+
+[node name="BottomRight" type="Marker2D" parent="World/GroundLayer/WalkArea"]
+position = Vector2(1907, 1049)
+
+[node name="TreeSpot" type="Marker2D" parent="World/GroundLayer"]
+position = Vector2(1712, 930)
+
+[node name="Tree" parent="World/GroundLayer/TreeSpot" instance=ExtResource("3_emqng")]
+z_index = 2
+
+[node name="RockSpot" type="Marker2D" parent="World/GroundLayer"]
+position = Vector2(194, 940)
+
+[node name="Rock" parent="World/GroundLayer/RockSpot" instance=ExtResource("4_ukilh")]
+z_index = 2
+
+[node name="Caveman" parent="World/GroundLayer" instance=ExtResource("3_hpcj2")]
+z_index = 2
+position = Vector2(956, 916)
+scale = Vector2(1.7, 1.7)
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7_5e2va")
+
+[node name="HUDPanel" type="Panel" parent="UI"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 656.0
+offset_top = -1.0
+offset_right = 1356.0
+offset_bottom = 84.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_lhg00")
+
+[node name="CaveHealthBar" type="TextureProgressBar" parent="UI/HUDPanel"]
+custom_minimum_size = Vector2(200, 24)
+layout_mode = 0
+offset_left = 238.0
+offset_top = 18.0
+offset_right = 438.0
+offset_bottom = 58.0
+scale = Vector2(2, 2)
+max_value = 10.0
+texture_under = ExtResource("14_pg4v4")
+texture_progress = ExtResource("15_468x7")
+
+[node name="ResourceBar" type="HBoxContainer" parent="UI/HUDPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -302.0
+offset_top = 4.0
+offset_right = 286.0
+offset_bottom = 244.0
+grow_horizontal = 2
+scale = Vector2(0.3, 0.3)
+alignment = 1
+
+[node name="WoodLabel" type="Label" parent="UI/HUDPanel/ResourceBar"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 84
+text = "0"
+
+[node name="WoodIcon" type="TextureRect" parent="UI/HUDPanel/ResourceBar"]
+layout_mode = 2
+texture = ExtResource("16_271fw")
+
+[node name="StoneLabel" type="Label" parent="UI/HUDPanel/ResourceBar"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 84
+text = "0"
+
+[node name="StoneIcon" type="TextureRect" parent="UI/HUDPanel/ResourceBar"]
+layout_mode = 2
+texture = ExtResource("17_rwrwa")

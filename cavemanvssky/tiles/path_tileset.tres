@@ -1,0 +1,16 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://bv2jngoimir7k"]
+
+[ext_resource type="Texture2D" uid="uid://w2cvy051v1eb" path="res://sprites/world/sidepath.png" id="1_62t0s"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_44myw"]
+resource_name = "path"
+texture = ExtResource("1_62t0s")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[resource]
+tile_size = Vector2i(32, 32)
+sources/1 = SubResource("TileSetAtlasSource_44myw")

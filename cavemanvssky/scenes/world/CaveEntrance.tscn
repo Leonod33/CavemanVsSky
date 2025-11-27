@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgoauy0hoxx00"]
+
+[ext_resource type="Texture2D" uid="uid://dk667bguw2ilj" path="res://sprites/world/cave.png" id="1_j483r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mwcwe"]
+size = Vector2(109, 56)
+
+[node name="CaveEntrance" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -49)
+texture = ExtResource("1_j483r")
+
+[node name="InteractArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(-2.5, -23)
+shape = SubResource("RectangleShape2D_mwcwe")
+
+[node name="InsideMarker" type="Marker2D" parent="."]
+position = Vector2(18, 0)

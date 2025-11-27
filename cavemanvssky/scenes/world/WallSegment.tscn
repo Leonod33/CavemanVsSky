@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://gveyfjrwh0xm"]
+
+[ext_resource type="Texture2D" uid="uid://bmt725flld8xj" path="res://sprites/world/wallBottom.png" id="1_s57b1"]
+[ext_resource type="Texture2D" uid="uid://ctq40cb1h7mho" path="res://sprites/world/wallTop.png" id="2_0ei0y"]
+
+[node name="WallSegment" type="Node2D"]
+
+[node name="Base" type="Sprite2D" parent="."]
+texture = ExtResource("1_s57b1")
+
+[node name="Top" type="Sprite2D" parent="."]
+position = Vector2(0, -74)
+texture = ExtResource("2_0ei0y")

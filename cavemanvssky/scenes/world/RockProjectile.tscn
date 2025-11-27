@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://b3kfoqfh67hx7"]
+
+[ext_resource type="Script" path="res://scenes/world/rock.gd" id="1_25lvx"]
+[ext_resource type="Texture2D" uid="uid://b6q2oaa84xcr0" path="res://sprites/world/Towers/RockProjectile.png" id="2_wqovh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uyga3"]
+radius = 14.0357
+
+[node name="Rock" type="Node2D"]
+z_index = 4096
+z_as_relative = false
+script = ExtResource("1_25lvx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2, -4)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_wqovh")
+offset = Vector2(-12, -27)
+
+[node name="InteractionArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+position = Vector2(-1, -12)
+shape = SubResource("CircleShape2D_uyga3")

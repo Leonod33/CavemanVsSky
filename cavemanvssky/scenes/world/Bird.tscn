@@ -1,0 +1,102 @@
+[gd_scene load_steps=9 format=3 uid="uid://dfbrkjpvsojss"]
+
+[ext_resource type="Script" path="res://scenes/world/bird.gd" id="1_7piy3"]
+[ext_resource type="Texture2D" uid="uid://nfr4moro1c6m" path="res://sprites/enemies/bird1body.png" id="1_fsase"]
+[ext_resource type="Texture2D" uid="uid://c2y52cyyxqrkv" path="res://sprites/enemies/bird1leftwing.png" id="2_8rric"]
+[ext_resource type="Texture2D" uid="uid://bdrq8yrq0ue7h" path="res://sprites/enemies/bird1rightwing.png" id="3_512s8"]
+
+[sub_resource type="Animation" id="Animation_gpyee"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LeftWing:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.411655]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RightWing:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-1.04022]
+}
+
+[sub_resource type="Animation" id="Animation_n2y0d"]
+resource_name = "flapping"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LeftWing:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.466667, 1),
+"transitions": PackedFloat32Array(1, 2.14355, 1),
+"update": 0,
+"values": [-0.411655, -0.185005, -0.411898]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RightWing:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.466667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-1.04022, -1.26885]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hxx38"]
+_data = {
+"RESET": SubResource("Animation_gpyee"),
+"flapping": SubResource("Animation_n2y0d")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_u1h4a"]
+radius = 41.0122
+
+[node name="Bird" type="Node2D"]
+script = ExtResource("1_7piy3")
+land_offset_y = -145.0
+
+[node name="BirdBody" type="Sprite2D" parent="."]
+texture = ExtResource("1_fsase")
+
+[node name="LeftWing" type="Sprite2D" parent="."]
+position = Vector2(-8.84254, 1.6785)
+rotation = -0.411655
+texture = ExtResource("2_8rric")
+offset = Vector2(-21.403, -1.35568)
+
+[node name="RightWing" type="Sprite2D" parent="."]
+z_index = -2
+position = Vector2(8, -10)
+rotation = -1.04022
+texture = ExtResource("3_512s8")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_hxx38")
+}
+
+[node name="HitArea" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+position = Vector2(-8, -8)
+shape = SubResource("CircleShape2D_u1h4a")
