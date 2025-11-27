@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://bn3apk2h8sni5"]
+[gd_scene load_steps=23 format=4 uid="uid://bn3apk2h8sni5"]
 
 [ext_resource type="Script" path="res://scenes/world/game_caveman_vs_sky.gd" id="1_ls5qy"]
 [ext_resource type="PackedScene" uid="uid://gveyfjrwh0xm" path="res://scenes/world/WallSegment.tscn" id="2_8d6jk"]
@@ -13,10 +13,12 @@
 [ext_resource type="PackedScene" uid="uid://bgoauy0hoxx00" path="res://scenes/world/CaveEntrance.tscn" id="4_wcgs7"]
 [ext_resource type="Script" path="res://scripts/ui/hud.gd" id="7_5e2va"]
 [ext_resource type="PackedScene" uid="uid://yvsxuhdr6yi2" path="res://scenes/world/Slingshot.tscn" id="7_l0fu2"]
+[ext_resource type="PackedScene" uid="uid://dd4a2blm4qxbj" path="res://scenes/world/Workshop.tscn" id="10_j2mde"]
 [ext_resource type="Texture2D" uid="uid://bc2tq3scuuw" path="res://sprites/ui/CaveHealthBack.png" id="14_pg4v4"]
 [ext_resource type="Texture2D" uid="uid://dkubmqrxmc3jg" path="res://sprites/ui/CaveHealthFront.png" id="15_468x7"]
 [ext_resource type="Texture2D" uid="uid://b2e0m6kydb22x" path="res://sprites/ui/woodicon.png" id="16_271fw"]
 [ext_resource type="Texture2D" uid="uid://dan717ccjv2ya" path="res://sprites/ui/stoneicon.png" id="17_rwrwa"]
+[ext_resource type="Texture2D" uid="uid://cnecrfhhpeek7" path="res://sprites/ui/meaticon.png" id="18_b5q4f"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lhg00"]
 bg_color = Color(0, 0, 0, 0.760784)
@@ -30,6 +32,12 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 shadow_size = 8
 shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tg85a"]
+bg_color = Color(0.704032, 0.589949, 0.199486, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o2pjb"]
+bg_color = Color(0.833997, 0.51644, 0.128709, 1)
 
 [node name="Game_CavemanVsSky" type="Node2D"]
 script = ExtResource("1_ls5qy")
@@ -148,6 +156,10 @@ texture = ExtResource("2_nay3w")
 region_enabled = true
 region_rect = Rect2(250, 250, 2500, 600)
 
+[node name="Workshop" parent="World/GroundLayer" instance=ExtResource("10_j2mde")]
+z_index = 1
+position = Vector2(1740, 747)
+
 [node name="WalkArea" type="Node2D" parent="World/GroundLayer"]
 
 [node name="TopLeft" type="Marker2D" parent="World/GroundLayer/WalkArea"]
@@ -174,6 +186,7 @@ position = Vector2(956, 916)
 scale = Vector2(1.7, 1.7)
 
 [node name="UI" type="Control" parent="."]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -186,20 +199,20 @@ script = ExtResource("7_5e2va")
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 656.0
-offset_top = -1.0
-offset_right = 1356.0
-offset_bottom = 84.0
+offset_left = 455.0
+offset_top = 1.0
+offset_right = 1455.0
+offset_bottom = 86.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_lhg00")
 
 [node name="CaveHealthBar" type="TextureProgressBar" parent="UI/HUDPanel"]
 custom_minimum_size = Vector2(200, 24)
 layout_mode = 0
-offset_left = 238.0
-offset_top = 18.0
-offset_right = 438.0
-offset_bottom = 58.0
+offset_left = 314.0
+offset_top = 17.0
+offset_right = 514.0
+offset_bottom = 57.0
 scale = Vector2(2, 2)
 max_value = 10.0
 texture_under = ExtResource("14_pg4v4")
@@ -235,3 +248,138 @@ text = "0"
 [node name="StoneIcon" type="TextureRect" parent="UI/HUDPanel/ResourceBar"]
 layout_mode = 2
 texture = ExtResource("17_rwrwa")
+
+[node name="MeatLabel" type="Label" parent="UI/HUDPanel/ResourceBar"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 84
+text = "0"
+
+[node name="MeatIcon" type="TextureRect" parent="UI/HUDPanel/ResourceBar"]
+layout_mode = 2
+texture = ExtResource("18_b5q4f")
+
+[node name="WaveLabel" type="Label" parent="UI/HUDPanel"]
+modulate = Color(0.890196, 0.807843, 0.0156863, 1)
+layout_mode = 0
+offset_left = 759.0
+offset_top = 6.0
+offset_right = 841.0
+offset_bottom = 37.0
+theme_override_font_sizes/font_size = 22
+text = "Wave: 1"
+
+[node name="ScoreLabel" type="Label" parent="UI/HUDPanel"]
+modulate = Color(0.890196, 0.807843, 0.0156863, 1)
+layout_mode = 0
+offset_left = 759.0
+offset_top = 47.0
+offset_right = 842.0
+offset_bottom = 78.0
+theme_override_font_sizes/font_size = 22
+text = "Score: 0
+"
+
+[node name="GameOverPanel" type="Control" parent="UI"]
+process_mode = 2
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/GameOverPanel"]
+show_behind_parent = true
+top_level = true
+z_index = 4
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0156863, 0.0156863, 0.0156863, 0.819608)
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/GameOverPanel"]
+z_index = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="UI/GameOverPanel/CenterContainer"]
+z_index = 5
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/GameOverPanel/CenterContainer/Panel"]
+z_index = 5
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 873.0
+offset_top = 196.0
+offset_right = 1037.0
+offset_bottom = 335.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 7
+
+[node name="TitleLabel" type="Label" parent="UI/GameOverPanel/CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 80
+text = "Game Over!"
+
+[node name="ScoreLabel" type="Label" parent="UI/GameOverPanel/CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 45
+text = "Score: 0"
+
+[node name="HighscoreLabel" type="Label" parent="UI/GameOverPanel/CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 45
+text = "High Score: 0"
+
+[node name="WaveLabel" type="Label" parent="UI/GameOverPanel/CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 38
+text = "Wave Reached: 1"
+
+[node name="NewRecordLabel" type="Label" parent="UI/GameOverPanel/CenterContainer/Panel/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Congrats! New Record!!"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/GameOverPanel/CenterContainer/Panel/VBoxContainer"]
+z_index = 5
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+mouse_filter = 0
+theme_override_constants/separation = 78
+alignment = 1
+
+[node name="RetryButton" type="Button" parent="UI/GameOverPanel/CenterContainer/Panel/VBoxContainer/HBoxContainer"]
+show_behind_parent = true
+z_index = 5
+z_as_relative = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_tg85a")
+text = "Retry?"
+
+[node name="TitleButton" type="Button" parent="UI/GameOverPanel/CenterContainer/Panel/VBoxContainer/HBoxContainer"]
+show_behind_parent = true
+z_index = 5
+z_as_relative = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_o2pjb")
+text = "Back to Title"

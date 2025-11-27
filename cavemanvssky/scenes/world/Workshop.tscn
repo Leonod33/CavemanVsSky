@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://dd4a2blm4qxbj"]
+
+[ext_resource type="Texture2D" uid="uid://cocm10pw57hec" path="res://sprites/world/toolshed.png" id="1_1jqf8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_86aih"]
+size = Vector2(145, 84)
+
+[node name="Workshop" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1, -101)
+texture = ExtResource("1_1jqf8")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+position = Vector2(-8, -42)
+shape = SubResource("RectangleShape2D_86aih")
+
+[node name="PromptLabel" type="Label" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Press A to Open Workshop"

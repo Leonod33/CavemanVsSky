@@ -18,6 +18,8 @@ var _land_target_pos: Vector2
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 var _cave: Node2D = null
 
+signal died
+
 
 func _ready() -> void:
 	add_to_group("enemies")
@@ -122,6 +124,7 @@ func peck_wall() -> void:
 func take_damage(amount: int) -> void:
 	health -= amount
 	if health <= 0:
+		died.emit()
 		queue_free()
 
 

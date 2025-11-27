@@ -7,12 +7,19 @@ extends Node2D
 @export var caveman_radius: float = 10.0
 @export var tree_radius: float = 26.0
 @export var rock_radius: float = 18.0
+@export var workshop_radius: float = 32.0
+
+
 
 # World references
 var walk_area_top_left: Node2D
 var walk_area_bottom_right: Node2D
 var tree: Node2D
 var rock: Node2D
+var workshop: Node2D = null
+var workshop_prompt_label: Label = null
+
+
 
 # Solid objects for simple collision
 var solids: Array = []
@@ -25,6 +32,7 @@ var is_chopping: bool = false
 # Resources
 var wood: int = 0
 var stone: int = 0
+var meat: int = 0  # NEW – dropped by enemies, used for upgrades
 
 # Gathering settings
 @export var chops_per_wood: int = 3
@@ -53,6 +61,15 @@ func _ready() -> void:
 
 	tree = world.get_node("TreeSpot/Tree")
 	rock = world.get_node("RockSpot/Rock")
+	
+	workshop = world.get_node_or_null("Workshop")  # or "WorkshopSpot/Workshop" if that's your path
+	if workshop:
+		workshop_prompt_label = workshop.get_node_or_null("PromptLabel")
+		print("[Caveman] Workshop found:", workshop.name)
+	else:
+		print("[Caveman] Workshop NOT found under World/GroundLayer")
+
+
 	
 	if tree and tree.has_method("setup"):
 		tree.setup(chops_per_wood)
@@ -117,6 +134,8 @@ func _process(delta: float) -> void:
 			_play_anim("idle")
 
 	_update_resource_bars_visibility()
+	_update_workshop_prompt()
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):
@@ -134,6 +153,39 @@ func _try_interact() -> void:
 	# 2) Try chopping / mining
 	if _try_chop_or_mine():
 		return
+	
+		# 3) Try workshop
+	if _try_workshop():
+		return
+
+func _try_workshop() -> bool:
+	if workshop == null:
+		return false
+
+	var d := global_position.distance_to(workshop.global_position)
+	var max_dist := workshop_radius + caveman_radius + interact_radius
+
+	if d > max_dist:
+		return false
+
+	print("[Caveman] Using workshop at distance:", d)
+
+	var game := get_tree().current_scene
+	if game and game.has_node("UI"):
+		var ui := game.get_node("UI")
+		if ui.has_method("open_upgrade_menu"):
+			ui.open_upgrade_menu()
+		else:
+			print("[Caveman] UI has no open_upgrade_menu() yet.")
+	return true
+
+func _update_workshop_prompt() -> void:
+	if workshop == null or workshop_prompt_label == null:
+		return
+
+	var d := global_position.distance_to(workshop.global_position)
+	var max_dist := workshop_radius + caveman_radius + interact_radius
+	workshop_prompt_label.visible = d <= max_dist
 
 
 func _try_build_tower() -> bool:
