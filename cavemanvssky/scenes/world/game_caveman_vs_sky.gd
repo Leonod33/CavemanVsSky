@@ -20,7 +20,9 @@ var state: int = GameState.PLAYING
 @export var base_birds_per_wave: int = 4
 @export var birds_per_wave_increment: int = 2
 
-@export var time_between_waves: float = 4.0
+@export var time_between_waves: float = 12.0
+@export var wave_clear_wood_reward: int = 1
+@export var wave_clear_stone_reward: int = 1
 
 @export var min_spawn_interval: float = 0.8
 @export var spawn_interval_decrease: float = 0.3
@@ -72,6 +74,8 @@ func _process(delta: float) -> void:
 			_update_bird_spawning(delta)
 		GameState.BETWEEN_WAVES:
 			_time_until_next_wave -= delta
+			if ui and ui.has_method("update_preparation_countdown"):
+				ui.update_preparation_countdown(_time_until_next_wave)
 			if _time_until_next_wave <= 0.0:
 				_start_wave(current_wave + 1)
 		GameState.GAME_OVER:
@@ -98,6 +102,8 @@ func _start_wave(wave_number: int) -> void:
 
 	_bird_timer = 0.5
 	state = GameState.PLAYING
+	if ui and ui.has_method("hide_preparation_panel"):
+		ui.hide_preparation_panel()
 
 	print("Starting wave %d | birds: %d | spawn interval: %.2f"
 		% [current_wave, birds_to_spawn_this_wave, _current_spawn_interval])
@@ -120,9 +126,42 @@ func _update_bird_spawning(delta: float) -> void:
 func _on_wave_cleared() -> void:
 	print("Wave %d cleared!" % current_wave)
 	score += score_per_wave_cleared
+	if caveman:
+		caveman.wood += wave_clear_wood_reward
+		caveman.stone += wave_clear_stone_reward
 	state = GameState.BETWEEN_WAVES
 	_time_until_next_wave = time_between_waves
 	_update_wave_and_score()
+
+	if ui and ui.has_method("show_preparation_panel"):
+		ui.show_preparation_panel(
+			current_wave,
+			current_wave + 1,
+			time_between_waves,
+			_get_wave_preview(current_wave + 1),
+			wave_clear_wood_reward,
+			wave_clear_stone_reward
+		)
+
+
+func start_next_wave_early() -> void:
+	if state != GameState.BETWEEN_WAVES:
+		return
+	_start_wave(current_wave + 1)
+
+
+func _get_wave_preview(wave_number: int) -> String:
+	var bird_count := base_birds_per_wave + (wave_number - 1) * birds_per_wave_increment
+
+	if wave_number == 3:
+		return "%d birds - FastBirds are joining the flock!" % bird_count
+	if wave_number == 4:
+		return "%d birds - A mix of ordinary birds and FastBirds" % bird_count
+	if wave_number == 5:
+		return "%d birds - WARNING: Bombirds incoming!" % bird_count
+	if wave_number > 5:
+		return "%d birds - Mixed flock, including Bombirds" % bird_count
+	return "%d ordinary birds approaching" % bird_count
 
 
 func _on_bird_died() -> void:
