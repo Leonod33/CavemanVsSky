@@ -191,6 +191,22 @@ func damage_wall(amount: int) -> void:
 		_game_over()
 
 
+func repair_wall(amount: int) -> bool:
+	if state == GameState.GAME_OVER or wall_health >= wall_max_health:
+		return false
+
+	wall_health = min(wall_max_health, wall_health + amount)
+
+	if ui and ui.has_method("update_cave_health"):
+		ui.update_cave_health(wall_health, wall_max_health)
+
+	return true
+
+
+func is_wall_damaged() -> bool:
+	return wall_health < wall_max_health
+
+
 # --- Bird spawning -----------------------------------------------------------
 
 func _spawn_bird() -> void:
