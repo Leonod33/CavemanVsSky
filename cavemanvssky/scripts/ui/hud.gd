@@ -10,6 +10,15 @@ extends Control
 @onready var wave_label  = $HUDPanel/WaveLabel
 @onready var score_label = $HUDPanel/ScoreLabel
 
+# --- Between-wave preparation UI -------------------------------------------
+
+@onready var preparation_panel: Control = $PreparationPanel
+@onready var prep_title_label: Label = $PreparationPanel/Panel/VBoxContainer/TitleLabel
+@onready var prep_preview_label: Label = $PreparationPanel/Panel/VBoxContainer/PreviewLabel
+@onready var prep_reward_label: Label = $PreparationPanel/Panel/VBoxContainer/RewardLabel
+@onready var prep_countdown_label: Label = $PreparationPanel/Panel/VBoxContainer/CountdownLabel
+@onready var prep_start_button: Button = $PreparationPanel/Panel/VBoxContainer/StartButton
+
 # --- Game Over UI -----------------------------------------------------------
 
 @onready var game_over_panel     = $GameOverPanel
@@ -68,6 +77,8 @@ func _ready() -> void:
 	up_damage_button.pressed.connect(_on_damage_upgrade_pressed)
 	up_fire_button.pressed.connect(_on_fire_upgrade_pressed)
 	up_close_button.pressed.connect(_on_upgrade_close_pressed)
+	prep_start_button.pressed.connect(_on_start_wave_pressed)
+	preparation_panel.visible = false
 
 	_update_labels()
 
@@ -105,6 +116,36 @@ func update_cave_health(current: int, max_health: int) -> void:
 func update_wave_and_score(_wave: int, _score: int) -> void:
 	# Just re-read from the game node
 	_update_labels()
+
+
+# --- Between-wave preparation ----------------------------------------------
+
+func show_preparation_panel(
+	cleared_wave: int,
+	next_wave: int,
+	duration: float,
+	preview: String,
+	wood_reward: int,
+	stone_reward: int
+) -> void:
+	prep_title_label.text = "Wave %d Cleared!" % cleared_wave
+	prep_preview_label.text = "Next: Wave %d\n%s" % [next_wave, preview]
+	prep_reward_label.text = "Preparation bonus: +%d wood, +%d stone" % [wood_reward, stone_reward]
+	preparation_panel.visible = true
+	update_preparation_countdown(duration)
+
+
+func update_preparation_countdown(time_left: float) -> void:
+	prep_countdown_label.text = "Next wave in %d..." % maxi(0, ceili(time_left))
+
+
+func hide_preparation_panel() -> void:
+	preparation_panel.visible = false
+
+
+func _on_start_wave_pressed() -> void:
+	if game and game.has_method("start_next_wave_early"):
+		game.start_next_wave_early()
 
 
 # --- Upgrade menu control ---------------------------------------------------
