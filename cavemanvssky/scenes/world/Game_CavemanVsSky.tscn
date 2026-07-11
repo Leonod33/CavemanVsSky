@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://bn3apk2h8sni5"]
+[gd_scene load_steps=25 format=4 uid="uid://bn3apk2h8sni5"]
 
 [ext_resource type="Script" path="res://scenes/world/game_caveman_vs_sky.gd" id="1_ls5qy"]
 [ext_resource type="PackedScene" uid="uid://gveyfjrwh0xm" path="res://scenes/world/WallSegment.tscn" id="2_8d6jk"]
@@ -8,7 +8,9 @@
 [ext_resource type="PackedScene" uid="uid://d27e7f4swljoh" path="res://scenes/world/Tree.tscn" id="3_emqng"]
 [ext_resource type="Texture2D" uid="uid://bq35orpx50ye" path="res://sprites/world/sky.png" id="3_fvu4l"]
 [ext_resource type="PackedScene" uid="uid://dkme8th6w705g" path="res://scenes/caveman/Caveman.tscn" id="3_hpcj2"]
+[ext_resource type="PackedScene" uid="uid://56pmrhc8xit1" path="res://scenes/world/FastBird.tscn" id="3_mtxe2"]
 [ext_resource type="PackedScene" uid="uid://bkvrn0spjanu0" path="res://scenes/world/WallSegmentTower.tscn" id="3_xho5t"]
+[ext_resource type="PackedScene" uid="uid://b26h8mxtpbhp3" path="res://scenes/world/BombBird.tscn" id="4_5wdbj"]
 [ext_resource type="PackedScene" uid="uid://div03yug0ec4h" path="res://scenes/world/Rock.tscn" id="4_ukilh"]
 [ext_resource type="PackedScene" uid="uid://bgoauy0hoxx00" path="res://scenes/world/CaveEntrance.tscn" id="4_wcgs7"]
 [ext_resource type="Script" path="res://scripts/ui/hud.gd" id="7_5e2va"]
@@ -42,6 +44,8 @@ bg_color = Color(0.833997, 0.51644, 0.128709, 1)
 [node name="Game_CavemanVsSky" type="Node2D"]
 script = ExtResource("1_ls5qy")
 bird_scene = ExtResource("2_p143c")
+fast_bird_scene = ExtResource("3_mtxe2")
+bomb_bird_scene = ExtResource("4_5wdbj")
 bird_spawn_interval = 5.0
 bird_spawn_y = 120.0
 
@@ -184,6 +188,8 @@ z_index = 2
 z_index = 2
 position = Vector2(956, 916)
 scale = Vector2(1.7, 1.7)
+
+[node name="Slingshot" parent="World" instance=ExtResource("7_l0fu2")]
 
 [node name="UI" type="Control" parent="."]
 process_mode = 3
@@ -383,3 +389,69 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_o2pjb")
 text = "Back to Title"
+
+[node name="UpgradePanel" type="Control" parent="UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1307.0
+offset_top = 89.0
+offset_right = 1307.0
+offset_bottom = 89.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/UpgradePanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Panel" type="Panel" parent="UI/UpgradePanel/CenterContainer"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/UpgradePanel/CenterContainer/Panel"]
+layout_direction = 1
+layout_mode = 2
+offset_left = -131.5
+offset_top = -2.0
+offset_right = 133.5
+offset_bottom = 198.0
+color = Color(0.0267215, 0.0267215, 0.0267215, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/UpgradePanel/CenterContainer/Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -74.5
+offset_right = 74.5
+offset_bottom = 182.0
+grow_horizontal = 2
+
+[node name="TitleLabel" type="Label" parent="UI/UpgradePanel/CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Toolshed Upgrades"
+horizontal_alignment = 1
+
+[node name="MeatLabel" type="Label" parent="UI/UpgradePanel/CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Meat: 0"
+horizontal_alignment = 1
+
+[node name="DamageButton" type="Button" parent="UI/UpgradePanel/CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Stronger Rocks"
+
+[node name="FireRateButton" type="Button" parent="UI/UpgradePanel/CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Increase Fire Rate"
+
+[node name="InfoLabel" type="Label" parent="UI/UpgradePanel/CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "."
+
+[node name="CloseButton" type="Button" parent="UI/UpgradePanel/CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Done"

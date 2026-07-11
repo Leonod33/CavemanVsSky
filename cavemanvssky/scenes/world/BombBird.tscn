@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://b26h8mxtpbhp3"]
+
+[ext_resource type="PackedScene" uid="uid://dfbrkjpvsojss" path="res://scenes/world/Bird.tscn" id="1_0ivia"]
+[ext_resource type="Texture2D" uid="uid://240yovpqvt7n" path="res://sprites/enemies/Bombbird1body.png" id="2_ja5pn"]
+[ext_resource type="Script" path="res://scenes/world/bomb_bird.gd" id="2_th45o"]
+[ext_resource type="PackedScene" uid="uid://800vqqpafc38" path="res://scenes/world/BigExplosion.tscn" id="3_gyijt"]
+
+[node name="BombBird" instance=ExtResource("1_0ivia")]
+scale = Vector2(2, 2.2)
+script = ExtResource("2_th45o")
+explosion_radius = 140.0
+explosion_damage = 3
+explosion_scene = ExtResource("3_gyijt")
+land_offset_y = -40.0
+
+[node name="BirdBody" parent="." index="0"]
+texture = ExtResource("2_ja5pn")
+
+[node name="AnimationPlayer" parent="." index="3"]
+speed_scale = 0.742

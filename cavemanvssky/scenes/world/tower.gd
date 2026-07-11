@@ -6,20 +6,28 @@ extends Node2D
 
 var _cooldown: float = 0.0
 
+var caveman: Node = null
 
 func _ready() -> void:
+		# Try to find the caveman once at startup
+	caveman = get_tree().get_first_node_in_group("caveman")
 	# Start with a random offset so multiple towers don't all fire in sync
 	_cooldown = randf_range(0.0, fire_interval)
 
 
 func _process(delta: float) -> void:
 	if projectile_scene == null:
-		# Nothing to shoot with yet
 		return
 
-	_cooldown -= delta
+	var fire_rate_mult := 1.0
+	if caveman and caveman.has_method("get_tower_fire_rate_multiplier"):
+		fire_rate_mult = caveman.get_tower_fire_rate_multiplier()
+
+	# Higher multiplier = cooldown ticks down faster
+	_cooldown -= delta * fire_rate_mult
 	if _cooldown > 0.0:
 		return
+
 
 	var target := _find_target()
 	if target == null:
@@ -62,9 +70,22 @@ func _shoot_at(target: Node2D) -> void:
 
 	var dir := (target.global_position - global_position).normalized()
 
-	# Preferred: Rock has a launch(direction: Vector2) method
+	# --- Apply tower damage multiplier, if available ---
+	var dmg_mult := 1.0
+	if caveman and caveman.has_method("get_tower_damage_multiplier"):
+		dmg_mult = caveman.get_tower_damage_multiplier()
+
+	if rock.has_method("set_damage_multiplier"):
+		rock.set_damage_multiplier(dmg_mult)
+	else:
+		# absolute fallback
+		if "damage" in rock:
+			rock.damage = int(round(rock.damage * dmg_mult))
+
+
+	# Launch the rock
 	if rock.has_method("launch"):
 		rock.launch(dir)
-	# Fallback: direct property
+		
 	elif "direction" in rock:
 		rock.direction = dir

@@ -1,7 +1,7 @@
-extends Node2D
+extends BaseEnemy
 
-@export var speed: float = 130.0
-@export var health: int = 5
+
+
 @export var screen_margin: float = 200.0
 @export var attack_interval: float = 1.0      # seconds between pecks
 @export var pass_drop: float = 75.0           # how much lower each new pass is
@@ -18,7 +18,6 @@ var _land_target_pos: Vector2
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 var _cave: Node2D = null
 
-signal died
 
 
 func _ready() -> void:
@@ -121,11 +120,6 @@ func peck_wall() -> void:
 		game.damage_wall(1)
 
 
-func take_damage(amount: int) -> void:
-	health -= amount
-	if health <= 0:
-		died.emit()
-		queue_free()
 
 
 func _update_facing() -> void:

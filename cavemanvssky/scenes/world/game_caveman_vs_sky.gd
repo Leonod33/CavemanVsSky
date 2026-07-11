@@ -1,6 +1,10 @@
 extends Node2D
 
 @export var bird_scene: PackedScene
+@export var fast_bird_scene: PackedScene
+@export var bomb_bird_scene: PackedScene
+
+
 @export var bird_spawn_interval: float = 3.0  # base seconds between birds (wave 1)
 @export var bird_spawn_y: float = 260.0       # height of the flight path above the wall
 
@@ -151,15 +155,50 @@ func damage_wall(amount: int) -> void:
 # --- Bird spawning -----------------------------------------------------------
 
 func _spawn_bird() -> void:
-	if bird_scene == null or sky_layer == null:
+	# Extra debug so we can see what’s happening
+	print("[Spawn] Trying to spawn enemy | wave:", current_wave)
+
+	if sky_layer == null:
+		print("[Spawn] ERROR: sky_layer is null")
 		return
 
-	var bird := bird_scene.instantiate()
+# --- Choose which scene to spawn ----------------------------------------
+	var scene_to_spawn: PackedScene = bird_scene  # default
+
+	if current_wave >= 5 and bomb_bird_scene != null:
+		var roll := randf()
+		if roll < 0.15:
+			scene_to_spawn = bomb_bird_scene
+		elif roll < 0.55:
+			scene_to_spawn = fast_bird_scene
+		else:
+			scene_to_spawn = bird_scene
+
+	elif current_wave >= 3 and fast_bird_scene != null:
+		# Waves 3–4: fast bird chance increases each wave
+		var fast_chance : float = clamp(0.1 + current_wave * 0.05, 0.0, 0.8)
+		scene_to_spawn = fast_bird_scene if randf() < fast_chance else bird_scene
+
+	else:
+		# Waves 1–2: normal only
+		scene_to_spawn = bird_scene
+
+
+
+	if scene_to_spawn == null:
+		print("[Spawn] ERROR: scene_to_spawn is null for wave", current_wave,
+			" | bird_scene:", bird_scene, " fast_bird_scene:", fast_bird_scene)
+		return
+
+	# --- Instantiate ---------------------------------------------------------
+	var bird := scene_to_spawn.instantiate()
 	if bird == null:
+		print("[Spawn] ERROR: instantiate() returned null")
 		return
 
 	sky_layer.add_child(bird)
 
+	# --- Position / direction ------------------------------------------------
 	var viewport_width := get_viewport_rect().size.x
 	var from_left := randf() < 0.5
 
@@ -179,11 +218,16 @@ func _spawn_bird() -> void:
 		if "direction" in bird:
 			bird.direction = dir
 
+	# --- Wave bookkeeping ----------------------------------------------------
 	birds_spawned_in_wave += 1
 	birds_alive += 1
 
+	print("[Spawn] Spawned enemy:", bird.name, " | alive:", birds_alive,
+		" / spawned this wave:", birds_spawned_in_wave, "/", birds_to_spawn_this_wave)
+
 	if bird.has_signal("died"):
 		bird.died.connect(_on_bird_died)
+
 
 
 # --- Rocks API (unchanged externally) ---------------------------------------

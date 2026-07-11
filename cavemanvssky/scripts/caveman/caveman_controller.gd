@@ -34,6 +34,18 @@ var wood: int = 0
 var stone: int = 0
 var meat: int = 0  # NEW – dropped by enemies, used for upgrades
 
+# --- Tower upgrade system (uses meat as currency) ---
+var tower_damage_level: int = 0
+var tower_damage_max_level: int = 3
+
+var tower_fire_rate_level: int = 0
+var tower_fire_rate_max_level: int = 3
+
+# Base meat costs (we’ll scale with level)
+const TOWER_DAMAGE_BASE_COST: int = 2
+const TOWER_FIRE_RATE_BASE_COST: int = 2
+
+
 # Gathering settings
 @export var chops_per_wood: int = 3
 @export var hits_per_stone: int = 4
@@ -54,6 +66,9 @@ var tower_spots: Array[Node2D] = []
 
 
 func _ready() -> void:
+	
+	add_to_group("caveman")
+	
 	var world := get_tree().current_scene.get_node("World/GroundLayer")
 	var walk_area := world.get_node("WalkArea")
 	walk_area_top_left = walk_area.get_node("TopLeft")
@@ -157,6 +172,66 @@ func _try_interact() -> void:
 		# 3) Try workshop
 	if _try_workshop():
 		return
+
+
+# --- Upgrade helpers (called by UI / Toolshed) ---
+
+func get_tower_damage_multiplier() -> float:
+	# 0 -> 1.0x, 1 -> 2.0x, 2 -> 3.0x, 3 -> 4.0x
+	return 1.0 + 1.0 * tower_damage_level
+
+
+func get_tower_fire_rate_multiplier() -> float:
+	# +20% fire rate per level (used to speed up cooldown)
+	return 1.0 + 0.2 * tower_fire_rate_level
+
+
+func get_tower_damage_cost() -> int:
+	# costs: 2, 4, 6...
+	return TOWER_DAMAGE_BASE_COST + tower_damage_level * 2
+
+
+func get_tower_fire_rate_cost() -> int:
+	# costs: 2, 4, 6...
+	return TOWER_FIRE_RATE_BASE_COST + tower_fire_rate_level * 2
+
+
+func can_buy_tower_damage() -> bool:
+	if tower_damage_level >= tower_damage_max_level:
+		return false
+	return meat >= get_tower_damage_cost()
+
+
+func can_buy_tower_fire_rate() -> bool:
+	if tower_fire_rate_level >= tower_fire_rate_max_level:
+		return false
+	return meat >= get_tower_fire_rate_cost()
+
+
+func buy_tower_damage() -> bool:
+	if not can_buy_tower_damage():
+		print("[Caveman] Can't buy tower damage (not enough meat or maxed).")
+		return false
+
+	var cost := get_tower_damage_cost()
+	meat -= cost
+	tower_damage_level += 1
+	print("[Caveman] Tower damage upgraded to Lv %d (meat left: %d)" % [tower_damage_level, meat])
+	return true
+
+
+func buy_tower_fire_rate() -> bool:
+	if not can_buy_tower_fire_rate():
+		print("[Caveman] Can't buy tower fire rate (not enough meat or maxed).")
+		return false
+
+	var cost := get_tower_fire_rate_cost()
+	meat -= cost
+	tower_fire_rate_level += 1
+	print("[Caveman] Tower fire rate upgraded to Lv %d (meat left: %d)" % [tower_fire_rate_level, meat])
+	return true
+
+
 
 func _try_workshop() -> bool:
 	if workshop == null:

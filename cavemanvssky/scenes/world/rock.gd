@@ -16,17 +16,21 @@ var _age: float = 0.0
 
 var _max_hits: int = 1
 
-
+var base_damage := 1
 
 func _ready() -> void:
 	_start_position = global_position
 	_age = 0.0
 
+	base_damage = damage  # store original value
+	
 	if hit_area:
 		hit_area.body_entered.connect(_on_body_entered)
 		hit_area.area_entered.connect(_on_area_entered)
 
 
+func set_damage_multiplier(mult: float) -> void:
+	damage = int(round(base_damage * mult))
 
 
 func launch(direction: Vector2) -> void:
@@ -34,6 +38,8 @@ func launch(direction: Vector2) -> void:
 		return
 
 	_velocity = direction.normalized() * speed
+	print("Rock damage =", damage)
+
 
 
 

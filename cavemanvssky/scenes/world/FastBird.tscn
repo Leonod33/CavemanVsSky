@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://56pmrhc8xit1"]
+
+[ext_resource type="PackedScene" uid="uid://dfbrkjpvsojss" path="res://scenes/world/Bird.tscn" id="1_a0tej"]
+[ext_resource type="Script" path="res://scenes/world/fast_bird.gd" id="1_cmali"]
+
+[node name="FastBird" instance=ExtResource("1_a0tej")]
+modulate = Color(0.415209, 0.635666, 0.509837, 1)
+scale = Vector2(0.75, 0.75)
+script = ExtResource("1_cmali")
+land_offset_y = -40.0
+
+[node name="LeftWing" parent="." index="1"]
+modulate = Color(1, 0.22, 0.22, 1)
+
+[node name="RightWing" parent="." index="2"]
+modulate = Color(1, 0.17, 0.17, 1)
+
+[node name="AnimationPlayer" parent="." index="3"]
+speed_scale = 1.323
