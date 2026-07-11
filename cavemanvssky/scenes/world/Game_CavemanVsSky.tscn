@@ -139,9 +139,21 @@ position = Vector2(1673, 104)
 
 [node name="TowerSpot4" type="Node2D" parent="World/WallLayer" groups=["tower_spot"]]
 position = Vector2(1672, 38)
+metadata/locked = true
 
 [node name="BuildMarker" type="Node2D" parent="World/WallLayer/TowerSpot4"]
 position = Vector2(2, 158)
+
+[node name="LockLabel" type="Label" parent="World/WallLayer/TowerSpot4"]
+visible = false
+offset_left = -104.0
+offset_top = -42.0
+offset_right = 104.0
+offset_bottom = 2.0
+theme_override_colors/font_color = Color(1, 0.78, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "SPACE: Unlock tower site\n(10 wood, 6 stone)"
+horizontal_alignment = 1
 
 [node name="WallSegment15" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
 position = Vector2(1797, 104)
@@ -302,11 +314,11 @@ text = "Score: 0
 [node name="PreparationPanel" type="Control" parent="UI"]
 visible = false
 layout_mode = 1
-anchors_preset = 10
+anchors_preset = 15
 anchor_right = 1.0
-offset_top = 112.0
-offset_bottom = 345.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 1
 
 [node name="Panel" type="PanelContainer" parent="UI/PreparationPanel"]

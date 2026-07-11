@@ -8,6 +8,7 @@ extends Node2D
 @export var tree_radius: float = 26.0
 @export var rock_radius: float = 18.0
 @export var workshop_radius: float = 32.0
+@export var cave_repair_radius: float = 60.0
 
 
 
@@ -18,6 +19,8 @@ var tree: Node2D
 var rock: Node2D
 var workshop: Node2D = null
 var workshop_prompt_label: Label = null
+var cave: Node2D = null
+var cave_repair_prompt_label: Label = null
 
 
 
@@ -59,6 +62,12 @@ var _rock_hit_progress: int = 0
 
 const TOWER_COST_WOOD: int = 5
 const TOWER_COST_STONE: int = 2
+const TOWER_SLOT_UNLOCK_WOOD: int = 10
+const TOWER_SLOT_UNLOCK_STONE: int = 6
+
+const CAVE_REPAIR_WOOD: int = 2
+const CAVE_REPAIR_STONE: int = 2
+const CAVE_REPAIR_AMOUNT: int = 3
 
 var tower_spots: Array[Node2D] = []
 
@@ -83,6 +92,10 @@ func _ready() -> void:
 		print("[Caveman] Workshop found:", workshop.name)
 	else:
 		print("[Caveman] Workshop NOT found under World/GroundLayer")
+
+	cave = get_tree().current_scene.get_node_or_null("World/WallLayer/CaveEntrance")
+	if cave:
+		cave_repair_prompt_label = cave.get_node_or_null("RepairPrompt")
 
 
 	
@@ -150,6 +163,8 @@ func _process(delta: float) -> void:
 
 	_update_resource_bars_visibility()
 	_update_workshop_prompt()
+	_update_cave_repair_prompt()
+	_update_tower_slot_prompts()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -169,7 +184,11 @@ func _try_interact() -> void:
 	if _try_chop_or_mine():
 		return
 	
-		# 3) Try workshop
+	# 3) Try repairing the cave
+	if _try_repair_cave():
+		return
+
+	# 4) Try workshop
 	if _try_workshop():
 		return
 
@@ -263,6 +282,39 @@ func _update_workshop_prompt() -> void:
 	workshop_prompt_label.visible = d <= max_dist
 
 
+func _try_repair_cave() -> bool:
+	if cave == null:
+		return false
+
+	if global_position.distance_to(cave.global_position) > cave_repair_radius:
+		return false
+
+	var game := get_tree().current_scene
+	if game == null or not game.has_method("is_wall_damaged") or not game.is_wall_damaged():
+		return false
+
+	if wood < CAVE_REPAIR_WOOD or stone < CAVE_REPAIR_STONE:
+		print("[Caveman] Not enough resources to repair the cave.")
+		return true
+
+	if game.has_method("repair_wall") and game.repair_wall(CAVE_REPAIR_AMOUNT):
+		wood -= CAVE_REPAIR_WOOD
+		stone -= CAVE_REPAIR_STONE
+		print("[Caveman] Repaired cave for %d health." % CAVE_REPAIR_AMOUNT)
+		return true
+
+	return false
+
+
+func _update_cave_repair_prompt() -> void:
+	if cave_repair_prompt_label == null or cave == null:
+		return
+
+	var game := get_tree().current_scene
+	var cave_is_damaged := game and game.has_method("is_wall_damaged") and game.is_wall_damaged()
+	cave_repair_prompt_label.visible = cave_is_damaged and global_position.distance_to(cave.global_position) <= cave_repair_radius
+
+
 func _try_build_tower() -> bool:
 	if tower_spots.is_empty():
 		return false
@@ -286,6 +338,20 @@ func _try_build_tower() -> bool:
 	if closest_spot == null or best_dist > tower_build_radius:
 		return false
 
+	if closest_spot.get_meta("locked", false):
+		if wood < TOWER_SLOT_UNLOCK_WOOD or stone < TOWER_SLOT_UNLOCK_STONE:
+			print("[Caveman] Not enough resources to unlock this tower site.")
+			return true
+
+		wood -= TOWER_SLOT_UNLOCK_WOOD
+		stone -= TOWER_SLOT_UNLOCK_STONE
+		closest_spot.set_meta("locked", false)
+		var lock_label := closest_spot.get_node_or_null("LockLabel") as Label
+		if lock_label:
+			lock_label.visible = false
+		print("[Caveman] Tower site unlocked! Wood:", wood, " Stone:", stone)
+		return true
+
 	if wood < TOWER_COST_WOOD or stone < TOWER_COST_STONE:
 		print("[Caveman] Not enough to build tower.")
 		return false
@@ -300,6 +366,17 @@ func _try_build_tower() -> bool:
 	tower.position = Vector2.ZERO
 
 	return true
+
+
+func _update_tower_slot_prompts() -> void:
+	for spot in tower_spots:
+		if not spot.get_meta("locked", false):
+			continue
+
+		var lock_label := spot.get_node_or_null("LockLabel") as Label
+		var marker := spot.get_node_or_null("BuildMarker") as Node2D
+		if lock_label and marker:
+			lock_label.visible = global_position.distance_to(marker.global_position) <= tower_build_radius
 
 func _try_chop_or_mine() -> bool:
 	var did_something := false
