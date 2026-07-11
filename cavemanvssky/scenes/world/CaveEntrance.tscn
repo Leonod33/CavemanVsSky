@@ -19,3 +19,15 @@ shape = SubResource("RectangleShape2D_mwcwe")
 
 [node name="InsideMarker" type="Marker2D" parent="."]
 position = Vector2(18, 0)
+
+[node name="RepairPrompt" type="Label" parent="."]
+visible = false
+offset_left = -85.0
+offset_top = -102.0
+offset_right = 85.0
+offset_bottom = -62.0
+scale = Vector2(0.45, 0.45)
+theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
+theme_override_font_sizes/font_size = 24
+text = "SPACE: Repair cave\n(2 wood, 2 stone)"
+horizontal_alignment = 1
