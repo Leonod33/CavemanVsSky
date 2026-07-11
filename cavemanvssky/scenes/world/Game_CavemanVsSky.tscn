@@ -92,11 +92,47 @@ position = Vector2(308, 38)
 [node name="BuildMarker" type="Node2D" parent="World/WallLayer/TowerSpot1"]
 position = Vector2(0, 154)
 
-[node name="WallSegment4" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
-position = Vector2(433, 104)
+[node name="UnlockSpot1" type="Node2D" parent="World/WallLayer" groups=["tower_spot"]]
+position = Vector2(433, 38)
+metadata/locked = true
 
-[node name="WallSegment5" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
-position = Vector2(557, 104)
+[node name="PlainWall" parent="World/WallLayer/UnlockSpot1" instance=ExtResource("2_8d6jk")]
+position = Vector2(0, 66)
+
+[node name="BuildMarker" type="Node2D" parent="World/WallLayer/UnlockSpot1"]
+position = Vector2(0, 158)
+
+[node name="LockLabel" type="Label" parent="World/WallLayer/UnlockSpot1"]
+visible = false
+offset_left = -104.0
+offset_top = -42.0
+offset_right = 104.0
+offset_bottom = 2.0
+theme_override_colors/font_color = Color(1, 0.78, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "SPACE: Unlock tower site\n(10 wood, 6 stone)"
+horizontal_alignment = 1
+
+[node name="UnlockSpot2" type="Node2D" parent="World/WallLayer" groups=["tower_spot"]]
+position = Vector2(557, 38)
+metadata/locked = true
+
+[node name="PlainWall" parent="World/WallLayer/UnlockSpot2" instance=ExtResource("2_8d6jk")]
+position = Vector2(0, 66)
+
+[node name="BuildMarker" type="Node2D" parent="World/WallLayer/UnlockSpot2"]
+position = Vector2(0, 158)
+
+[node name="LockLabel" type="Label" parent="World/WallLayer/UnlockSpot2"]
+visible = false
+offset_left = -104.0
+offset_top = -42.0
+offset_right = 104.0
+offset_bottom = 2.0
+theme_override_colors/font_color = Color(1, 0.78, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "SPACE: Unlock tower site\n(10 wood, 6 stone)"
+horizontal_alignment = 1
 
 [node name="TowSeg2" parent="World/WallLayer" instance=ExtResource("3_xho5t")]
 position = Vector2(680, 104)
@@ -128,23 +164,17 @@ position = Vector2(1300, 37)
 [node name="BuildMarker" type="Node2D" parent="World/WallLayer/TowerSpot3"]
 position = Vector2(4, 159)
 
-[node name="WallSegment12" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
-position = Vector2(1425, 104)
-
-[node name="WallSegment13" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
-position = Vector2(1549, 104)
-
-[node name="TowSeg4" parent="World/WallLayer" instance=ExtResource("3_xho5t")]
-position = Vector2(1673, 104)
-
-[node name="TowerSpot4" type="Node2D" parent="World/WallLayer" groups=["tower_spot"]]
-position = Vector2(1672, 38)
+[node name="UnlockSpot3" type="Node2D" parent="World/WallLayer" groups=["tower_spot"]]
+position = Vector2(1425, 38)
 metadata/locked = true
 
-[node name="BuildMarker" type="Node2D" parent="World/WallLayer/TowerSpot4"]
-position = Vector2(2, 158)
+[node name="PlainWall" parent="World/WallLayer/UnlockSpot3" instance=ExtResource("2_8d6jk")]
+position = Vector2(0, 66)
 
-[node name="LockLabel" type="Label" parent="World/WallLayer/TowerSpot4"]
+[node name="BuildMarker" type="Node2D" parent="World/WallLayer/UnlockSpot3"]
+position = Vector2(0, 158)
+
+[node name="LockLabel" type="Label" parent="World/WallLayer/UnlockSpot3"]
 visible = false
 offset_left = -104.0
 offset_top = -42.0
@@ -154,6 +184,36 @@ theme_override_colors/font_color = Color(1, 0.78, 0.2, 1)
 theme_override_font_sizes/font_size = 18
 text = "SPACE: Unlock tower site\n(10 wood, 6 stone)"
 horizontal_alignment = 1
+
+[node name="UnlockSpot4" type="Node2D" parent="World/WallLayer" groups=["tower_spot"]]
+position = Vector2(1549, 38)
+metadata/locked = true
+
+[node name="PlainWall" parent="World/WallLayer/UnlockSpot4" instance=ExtResource("2_8d6jk")]
+position = Vector2(0, 66)
+
+[node name="BuildMarker" type="Node2D" parent="World/WallLayer/UnlockSpot4"]
+position = Vector2(0, 158)
+
+[node name="LockLabel" type="Label" parent="World/WallLayer/UnlockSpot4"]
+visible = false
+offset_left = -104.0
+offset_top = -42.0
+offset_right = 104.0
+offset_bottom = 2.0
+theme_override_colors/font_color = Color(1, 0.78, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "SPACE: Unlock tower site\n(10 wood, 6 stone)"
+horizontal_alignment = 1
+
+[node name="TowSeg4" parent="World/WallLayer" instance=ExtResource("3_xho5t")]
+position = Vector2(1673, 104)
+
+[node name="TowerSpot4" type="Node2D" parent="World/WallLayer" groups=["tower_spot"]]
+position = Vector2(1672, 38)
+
+[node name="BuildMarker" type="Node2D" parent="World/WallLayer/TowerSpot4"]
+position = Vector2(2, 158)
 
 [node name="WallSegment15" parent="World/WallLayer" instance=ExtResource("2_8d6jk")]
 position = Vector2(1797, 104)
@@ -313,12 +373,9 @@ text = "Score: 0
 
 [node name="PreparationPanel" type="Control" parent="UI"]
 visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
 mouse_filter = 1
 
 [node name="Panel" type="PanelContainer" parent="UI/PreparationPanel"]

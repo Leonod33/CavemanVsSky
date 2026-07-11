@@ -72,6 +72,7 @@ const CAVE_REPAIR_AMOUNT: int = 3
 var tower_spots: Array[Node2D] = []
 
 @onready var tower_scene: PackedScene = preload("res://scenes/world/Tower.tscn")
+@onready var tower_wall_scene: PackedScene = preload("res://scenes/world/WallSegmentTower.tscn")
 
 
 func _ready() -> void:
@@ -351,6 +352,15 @@ func _try_build_tower() -> bool:
 		var lock_label := closest_spot.get_node_or_null("LockLabel") as Label
 		if lock_label:
 			lock_label.visible = false
+
+		var plain_wall := closest_spot.get_node_or_null("PlainWall")
+		if plain_wall:
+			plain_wall.queue_free()
+
+		var tower_wall := tower_wall_scene.instantiate()
+		tower_wall.name = "TowerWall"
+		closest_spot.add_child(tower_wall)
+		tower_wall.position = Vector2(0, 66)
 		print("[Caveman] Tower site unlocked! Wood:", wood, " Stone:", stone)
 		return true
 
