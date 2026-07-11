@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=4 uid="uid://bn3apk2h8sni5"]
+[gd_scene load_steps=26 format=4 uid="uid://bn3apk2h8sni5"]
 
 [ext_resource type="Script" path="res://scenes/world/game_caveman_vs_sky.gd" id="1_ls5qy"]
 [ext_resource type="PackedScene" uid="uid://gveyfjrwh0xm" path="res://scenes/world/WallSegment.tscn" id="2_8d6jk"]
@@ -40,6 +40,20 @@ bg_color = Color(0.704032, 0.589949, 0.199486, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o2pjb"]
 bg_color = Color(0.833997, 0.51644, 0.128709, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_preparation"]
+bg_color = Color(0.0705882, 0.054902, 0.027451, 0.921569)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.890196, 0.694118, 0.164706, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
 
 [node name="Game_CavemanVsSky" type="Node2D"]
 script = ExtResource("1_ls5qy")
@@ -284,6 +298,68 @@ offset_bottom = 78.0
 theme_override_font_sizes/font_size = 22
 text = "Score: 0
 "
+
+[node name="PreparationPanel" type="Control" parent="UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 112.0
+offset_bottom = 345.0
+grow_horizontal = 2
+mouse_filter = 1
+
+[node name="Panel" type="PanelContainer" parent="UI/PreparationPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -330.0
+offset_top = -106.0
+offset_right = 330.0
+offset_bottom = 106.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_preparation")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/PreparationPanel/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="UI/PreparationPanel/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.827451, 0.258824, 1)
+theme_override_font_sizes/font_size = 34
+text = "Wave Cleared!"
+horizontal_alignment = 1
+
+[node name="PreviewLabel" type="Label" parent="UI/PreparationPanel/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Next wave preview"
+horizontal_alignment = 1
+
+[node name="RewardLabel" type="Label" parent="UI/PreparationPanel/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.643137, 0.92549, 0.513726, 1)
+theme_override_font_sizes/font_size = 18
+text = "Preparation bonus"
+horizontal_alignment = 1
+
+[node name="CountdownLabel" type="Label" parent="UI/PreparationPanel/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Next wave in 4..."
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="UI/PreparationPanel/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Start Wave Now"
 
 [node name="GameOverPanel" type="Control" parent="UI"]
 process_mode = 2
