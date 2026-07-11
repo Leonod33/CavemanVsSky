@@ -311,7 +311,9 @@ func _update_cave_repair_prompt() -> void:
 		return
 
 	var game := get_tree().current_scene
-	var cave_is_damaged := game and game.has_method("is_wall_damaged") and game.is_wall_damaged()
+	var cave_is_damaged: bool = false
+	if game and game.has_method("is_wall_damaged"):
+		cave_is_damaged = bool(game.call("is_wall_damaged"))
 	cave_repair_prompt_label.visible = cave_is_damaged and global_position.distance_to(cave.global_position) <= cave_repair_radius
 
 
